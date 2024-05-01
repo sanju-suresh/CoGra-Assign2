@@ -8,17 +8,15 @@
 #include<string.h>
 #include<fstream>
 #include<sstream>
-#define STB_IMAGE_IMPLEMENTATION
-#include "../include/stb_image.h"
 using namespace std;
 
-const char* vertexShaderSourceFilePath = "./projection.vert";
-const char* fragmentShaderSourceFilePath = "./colorGrad.frag";
+const char* vertexShaderSourceFilePath = "./deVert.vert";
+const char* fragmentShaderSourceFilePath = "./deFrag.frag";
 
 const char* vertexShaderSource;
-//Fragment Shader source code
+
 const char* fragmentShaderSource;
-const int height=875, width=1400;
+const int height=1000, width=1000;
 
 
 std::string readShaderFile(const char* filePath) {
@@ -62,8 +60,7 @@ int main()
 
     //Load GLAD so it configures OpenGL
     gladLoadGL();
-    // Specify the viewport of OpenGL in the Window
-    // In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
+    
     glViewport(0, 0, width, height);
 
 
@@ -101,37 +98,37 @@ int main()
 
 
     float vertices[] = {
-        // positions            // texture coords
+        // positions            
         // Front face
-        -0.7f, -0.7f,  0.7f,    0.0f, 0.0f, // bottom-left
-        0.7f, -0.7f,  0.7f,    1.0f, 0.0f, // bottom-right    
-        0.7f,  0.7f,  0.7f,    1.0f, 1.0f, // top-right              
-        -0.7f,  0.7f,  0.7f,    0.0f, 1.0f, // top-left 
+        -0.7f, -0.7f,  0.7f,    
+        0.7f, -0.7f,  0.7f,    
+        0.7f,  0.7f,  0.7f,      
+        -0.7f,  0.7f,  0.7f,   
         // Back face
-        -0.7f, -0.7f, -0.7f,    1.0f, 0.0f, // bottom-right
-        0.7f, -0.7f, -0.7f,    0.0f, 0.0f, // bottom-left
-        0.7f,  0.7f, -0.7f,    0.0f, 1.0f, // top-left     
-        -0.7f,  0.7f, -0.7f,    1.0f, 1.0f, // top-right        
+        -0.7f, -0.7f, -0.7f,   
+        0.7f, -0.7f, -0.7f,    
+        0.7f,  0.7f, -0.7f,    
+        -0.7f,  0.7f, -0.7f,          
         // Top face
-        0.7f,  0.7f,  0.7f,    1.0f, 0.0f, // bottom-right
-        -0.7f,  0.7f,  0.7f,    0.0f, 0.0f, // bottom-left       
-        -0.7f,  0.7f, -0.7f,    0.0f, 1.0f, // top-left     
-        0.7f,  0.7f, -0.7f,    1.0f, 1.0f, // top-right                
+        0.7f,  0.7f,  0.7f,    
+        -0.7f,  0.7f,  0.7f,    
+        -0.7f,  0.7f, -0.7f,  
+        0.7f,  0.7f, -0.7f,               
         // Bottom face
-        -0.7f, -0.7f,  0.7f,    1.0f, 0.0f, // top-right
-        0.7f, -0.7f,  0.7f,    0.0f, 0.0f, // top-left     
-        0.7f, -0.7f, -0.7f,    0.0f, 1.0f, // bottom-left        
-        -0.7f, -0.7f, -0.7f,    1.0f, 1.0f, // bottom-right        
+        -0.7f, -0.7f,  0.7f,   
+        0.7f, -0.7f,  0.7f,    
+        0.7f, -0.7f, -0.7f,       
+        -0.7f, -0.7f, -0.7f,   
         // Right face
-        0.7f, -0.7f,  0.7f,    1.0f, 0.0f, // bottom-right
-        0.7f,  0.7f,  0.7f,    0.0f, 0.0f, // top-right        
-        0.7f,  0.7f, -0.7f,    0.0f, 1.0f, // top-left                
-        0.7f, -0.7f, -0.7f,    1.0f, 1.0f, // bottom-left        
+        0.7f, -0.7f,  0.7f,    
+        0.7f,  0.7f,  0.7f,    
+        0.7f,  0.7f, -0.7f,                   
+        0.7f, -0.7f, -0.7f,      
         // Left face
-        -0.7f, -0.7f,  0.7f,    0.0f, 0.0f, // bottom-left
-        -0.7f,  0.7f,  0.7f,    1.0f, 0.0f, // top-left        
-        -0.7f,  0.7f, -0.7f,    1.0f, 1.0f, // top-right                
-        -0.7f, -0.7f, -0.7f,    0.0f, 1.0f  // bottom-right
+        -0.7f, -0.7f,  0.7f,   
+        -0.7f,  0.7f,  0.7f,       
+        -0.7f,  0.7f, -0.7f,                   
+        -0.7f, -0.7f, -0.7f,   
     };
 
 
@@ -160,50 +157,9 @@ int main()
     // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    // texture coord attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
+    
 
-    // Load and create a texture
-    GLuint texture;
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    // Set texture wrapping parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // Set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Load image, create texture and generate mipmaps
-    int width, height, nrChannels;
-    stbi_set_flip_vertically_on_load(true); // Flip texture vertically to match OpenGL's coordinate system
-    unsigned char* data = stbi_load("../include/cf2.jpg", &width, &height, &nrChannels, 0);
-    if (data)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else
-    {
-        std::cerr << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
-
-    glm::mat4 model = glm::mat4(1.0f); // Initialize model matrix as identity matrix
-    // Projection matrix
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width / height, 0.1f, 100.0f);
-    // View matrix
-    glm::mat4 view = glm::lookAt(glm::vec3(3.0f, 2.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-
-    unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
-
-    unsigned int projectionLoc = glGetUniformLocation(shaderProgram, "projection");
-
-    // Set the view matrix uniform
-    unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");
+    
 
     // Render loop
     while (!glfwWindowShouldClose(window))
@@ -218,17 +174,8 @@ int main()
         // Enable depth testing
         glEnable(GL_DEPTH_TEST);
 
-        // Bind texture
-        glBindTexture(GL_TEXTURE_2D, texture);
-
         // Use shader program
         glUseProgram(shaderProgram);
-
-
-        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projection));
-        glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-
 
         // Bind vertex array
         glBindVertexArray(VAO);
@@ -246,7 +193,6 @@ int main()
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
-    glDeleteTextures(1, &texture);
 
     // Terminate GLFW
     glfwTerminate();
