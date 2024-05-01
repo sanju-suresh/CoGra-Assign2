@@ -133,12 +133,12 @@ int main()
 
 
     unsigned int indices[] = {
-        0,  1,  2,  2,  3,  0, // Front face
-        4,  5,  6,  6,  7,  4, // Back face
-        8,  9,  10, 10, 11, 8, // Top face
-        12, 13, 14, 14, 15, 12, // Bottom face
-        16, 17, 18, 18, 19, 16, // Right face
-        20, 21, 22, 22, 23, 20  // Left face
+        0,  1,  2,   3,  0, // Front face
+        4,  5,  6,   7,  4, // Back face
+        8,  9,  10,  11, 8, // Top face
+        12, 13, 14,  15, 12, // Bottom face
+        16, 17, 18,  19, 16, // Right face
+        20, 21, 22,  23, 20  // Left face
     };
 
     GLuint VBO, VAO, EBO;
