@@ -1,4 +1,5 @@
 #include<iostream>
+
 #include<glad/glad.h>
 #include<glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -141,6 +142,10 @@ int main()
         20, 21, 22, 22, 23, 20  // Left face
     };
 
+    //VBO - Vertex Buffer Object
+    //VAO - Vertex Array Object
+    //EBO - Element Buffer Object
+
     GLuint VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -155,7 +160,7 @@ int main()
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
 
